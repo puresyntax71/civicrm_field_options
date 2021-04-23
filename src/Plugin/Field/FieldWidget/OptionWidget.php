@@ -28,6 +28,9 @@ class OptionWidget extends WidgetBase implements ContainerFactoryPluginInterface
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $settings = $items->getFieldDefinition()->getSettings();
     $field_option_group = $settings['option_group_id'];
+    $field_option_group_type = $settings['option_group_type'];
+    $option_value_user_selection = $settings['option_value_user_selection'];
+    $option_value_user_selection = array_filter($option_value_user_selection);
     $optionList = [];
     if (empty($field_option_group)) {
       return $element;
@@ -36,16 +39,20 @@ class OptionWidget extends WidgetBase implements ContainerFactoryPluginInterface
     \Drupal::service('civicrm')->initialize();
     $options = civicrm_api('OptionValue', 'get', ['version' => 3, 'is_active' => 1, 'option_group_id' => $field_option_group, 'option.limit' => 1000]);
     foreach ($options['values'] as $option) {
+      if (!empty($option_value_user_selection) && !in_array($option['value'], $option_value_user_selection)) {
+        continue;
+      }
       $optionList[$option['value']] = $option['label'];
     }
     $default = (isset($items[$delta]->value) && isset($optionList[$items[$delta]->value])) ? $items[$delta]->value : NULL;
 
     $element['value'] = $element + [
-        '#type' => 'select',
+        '#type' => $field_option_group_type,
         '#options' => $optionList,
         '#empty_value' => '',
         '#default_value' => $default,
       ];
+
     // Return element(s).
     return $element;
   }
