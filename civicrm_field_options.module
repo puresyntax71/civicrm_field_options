@@ -1,0 +1,25 @@
+<?php
+
+/**
+ * @file
+ * Contains civicrm_field_options.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function civicrm_field_options_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the civicrm_field_options module.
+    case 'help.page.civicrm_field_options':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('CiviCRM Field options in Drupal') . '</p>';
+
+      return $output;
+
+    default:
+  }
+}

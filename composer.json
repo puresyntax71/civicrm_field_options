@@ -1,0 +1,19 @@
+{
+    "name": "drupal/civicrm_field_options",
+    "type": "drupal-module",
+    "description": "CiviCRM Field options in Drupal",
+    "license": "AGPL-3.0-only",
+    "authors": [
+        {
+            "name": "Sunil Pawar",
+            "role": "Developer",
+            "homepage": "https://skvare.com"
+        }
+    ],
+    "homepage": "https://www.drupal.org/project/civicrm_field_options",
+    "minimum-stability": "dev",
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/civicrm_field_options",
+        "source": "http://cgit.drupalcode.org/civicrm_field_options"
+    }
+}
