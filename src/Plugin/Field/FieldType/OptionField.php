@@ -69,7 +69,7 @@ class OptionField extends FieldItemBase implements FieldItemInterface {
     $elements = [];
     \Drupal::service('civicrm')->initialize();
     $optionList = [];
-    $options = civicrm_api('OptionGroup', 'get',
+    $options = civicrm_api3('OptionGroup', 'get',
       [
         'version' => 3,
         'is_active' => 1,
@@ -102,7 +102,7 @@ class OptionField extends FieldItemBase implements FieldItemInterface {
       // '#disabled' => $has_data,
     ];
     if ($this->getSetting('option_group_id')) {
-      $options = civicrm_api('OptionValue', 'get',
+      $options = civicrm_api3('OptionValue', 'get',
         [
           'version' => 3,
           'is_active' => 1,

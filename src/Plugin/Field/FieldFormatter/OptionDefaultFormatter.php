@@ -6,6 +6,10 @@ use Drupal\Core\Field\FieldItemInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\Logger\LoggerChannelFactoryInterface;
+use Drupal\civicrm_field_options\Utility\CivicrmService;
 
 /**
  * Plugin implementation of the 'civicrm_field_option' formatter.
@@ -21,15 +25,50 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 class OptionDefaultFormatter extends FormatterBase implements ContainerFactoryPluginInterface {
 
   /**
+   * The CiviCRM API service.
+   *
+   * @var \Drupal\civicrm_fields\Utility\CivicrmService
+   */
+  protected $civicrm;
+
+  /**
+   * The logger service.
+   *
+   * @var \Drupal\Core\Logger\LoggerChannelInterface
+   */
+  protected $logger;
+
+  /**
    * {@inheritdoc}
    */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $plugin_id,
+      $plugin_definition,
+      $configuration['field_definition'],
+      $configuration['settings'],
+      $configuration['label'],
+      $configuration['view_mode'],
+      $configuration['third_party_settings'],
+      $container->get('civicrm.service'),
+      $container->get('logger.factory')
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, CivicrmService $service, LoggerChannelFactoryInterface $logger) {
+    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
+    $this->civicrm = $service;
+    $this->logger = $logger->get('civicrm_field_options');
+  }
 
   /**
    * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = [];
-    \Drupal::service('civicrm')->initialize();
     foreach ($items as $delta => $item) {
       $elements[$delta] = ['#markup' => $this->viewValue($item)];
     }
@@ -59,14 +98,14 @@ class OptionDefaultFormatter extends FormatterBase implements ContainerFactoryPl
     if ($item->get('value')->getValue() != NULL) {
       $optionValue = $item->get('value')->getValue();
       try {
-        $result = civicrm_api3('OptionValue', 'getvalue', [
+        $result = $this->civicrm->api('OptionValue', 'getvalue', [
           'return' => "label",
           'option_group_id' => $field_option_group,
           'value' => $optionValue,
         ]);
       }
       catch (\Exception $e) {
-        $this->logger->get('Option Value')->error($e->getMessage());
+        $this->logger->error(print_r($e->getMessage(), TRUE));
       }
       if (!is_null($results) && !empty($results)) {
         $elements[] = [
