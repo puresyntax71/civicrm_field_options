@@ -1,0 +1,4 @@
+services:
+  civicrm.service:
+    class: 'Drupal\civicrm_field_options\Utility\CivicrmService'
+    arguments: ['@civicrm', '@logger.factory']
