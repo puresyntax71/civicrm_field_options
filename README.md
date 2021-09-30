@@ -44,7 +44,8 @@ manage fields link.
 4. Enter a label, machine name for the field.
 5. Click Save.
 
-####Choose the Option Group
+#### Choose the Option Group
+
 6. Select `Field settings` Tab.
 7. Select option from `CiviCRM Option Groups` Field.
 8. Click Save, form get reloaded. Now you will see all option from selected 
