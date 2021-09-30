@@ -21,16 +21,15 @@ use Drupal\Core\Form\FormStateInterface;
  */
 class OptionField extends FieldItemBase implements FieldItemInterface {
 
-
   /**
    * {@inheritdoc}
    */
   public static function defaultStorageSettings() {
     return [
-        'option_group_id' => '',
-        'option_group_type' => '',
-        'option_value_user_selection' => '',
-      ] + parent::defaultStorageSettings();
+      'option_group_id' => '',
+      'option_group_type' => '',
+      'option_value_user_selection' => '',
+    ] + parent::defaultStorageSettings();
   }
 
   /**
@@ -70,7 +69,13 @@ class OptionField extends FieldItemBase implements FieldItemInterface {
     $elements = [];
     \Drupal::service('civicrm')->initialize();
     $optionList = [];
-    $options = civicrm_api('OptionGroup', 'get', ['version' => 3, 'is_active' => 1, 'options' => ['limit' => 0, 'sort' => "title"], 'name' => ['NOT LIKE' => "msg_tpl%"]]);
+    $options = civicrm_api('OptionGroup', 'get',
+      [
+        'version' => 3,
+        'is_active' => 1,
+        'options' => ['limit' => 0, 'sort' => "title"],
+        'name' => ['NOT LIKE' => "msg_tpl%"],
+      ]);
     foreach ($options['values'] as $option) {
       $optionList[$option['id']] = $option['title'];
     }
@@ -81,7 +86,7 @@ class OptionField extends FieldItemBase implements FieldItemInterface {
       '#options' => $optionList,
       '#default_value' => $this->getSetting('option_group_id'),
       '#required' => TRUE,
-      '#description' => t('Choose CiviCRM option group for getting options. "User Selection" Field get available after setting up CiviCRM option Group.'),
+      '#description' => $this->t('Choose CiviCRM option group for getting options. "User Selection" Field get available after setting up CiviCRM option Group.'),
       '#rows' => 20,
       '#disabled' => $has_data,
     ];
@@ -89,15 +94,21 @@ class OptionField extends FieldItemBase implements FieldItemInterface {
 
     $elements['option_group_type'] = [
       '#type' => 'select',
-      '#title' => t('Field Type'),
+      '#title' => $this->t('Field Type'),
       '#options' => $fieldTypes,
       '#default_value' => $this->getSetting('option_group_type'),
       '#required' => TRUE,
-      '#description' => t('Choose Field Type.'),
-      //'#disabled' => $has_data,
+      '#description' => $this->t('Choose Field Type.'),
+      // '#disabled' => $has_data,
     ];
     if ($this->getSetting('option_group_id')) {
-      $options = civicrm_api('OptionValue', 'get', ['version' => 3, 'is_active' => 1, 'option_group_id' => $this->getSetting('option_group_id'), 'option.limit' => 1000]);
+      $options = civicrm_api('OptionValue', 'get',
+        [
+          'version' => 3,
+          'is_active' => 1,
+          'option_group_id' => $this->getSetting('option_group_id'),
+          'option.limit' => 1000,
+        ]);
       $userSelectionList = [];
       foreach ($options['values'] as $option) {
         $userSelectionList[$option['value']] = $option['label'];
@@ -105,10 +116,10 @@ class OptionField extends FieldItemBase implements FieldItemInterface {
 
       $elements['option_value_user_selection'] = [
         '#type' => 'checkboxes',
-        '#title' => t('User Selection'),
+        '#title' => $this->t('User Selection'),
         '#options' => $userSelectionList,
         '#default_value' => $this->getSetting('option_value_user_selection'),
-        '#description' => t('Choose your options you want to configure for this field, No selection mean it display all options'),
+        '#description' => $this->t('Choose your options you want to configure for this field, No selection mean it display all options'),
       ];
     }
 

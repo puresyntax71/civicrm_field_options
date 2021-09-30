@@ -2,13 +2,10 @@
 
 namespace Drupal\civicrm_field_options\Plugin\Field\FieldFormatter;
 
-use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
-use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Plugin implementation of the 'civicrm_field_option' formatter.
@@ -84,4 +81,5 @@ class OptionDefaultFormatter extends FormatterBase implements ContainerFactoryPl
 
     return $result;
   }
+
 }

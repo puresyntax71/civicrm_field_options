@@ -2,12 +2,10 @@
 
 namespace Drupal\civicrm_field_options\Plugin\Field\FieldWidget;
 
-use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Plugin implementation of the 'civicrm_field_option' field widget.
@@ -37,7 +35,13 @@ class OptionWidget extends WidgetBase implements ContainerFactoryPluginInterface
     }
 
     \Drupal::service('civicrm')->initialize();
-    $options = civicrm_api('OptionValue', 'get', ['version' => 3, 'is_active' => 1, 'option_group_id' => $field_option_group, 'option.limit' => 1000]);
+    $options = civicrm_api('OptionValue', 'get',
+      [
+        'version' => 3,
+        'is_active' => 1,
+        'option_group_id' => $field_option_group,
+        'option.limit' => 1000,
+      ]);
     foreach ($options['values'] as $option) {
       if (!empty($option_value_user_selection) && !in_array($option['value'], $option_value_user_selection)) {
         continue;
@@ -47,11 +51,11 @@ class OptionWidget extends WidgetBase implements ContainerFactoryPluginInterface
     $default = (isset($items[$delta]->value) && isset($optionList[$items[$delta]->value])) ? $items[$delta]->value : NULL;
 
     $element['value'] = $element + [
-        '#type' => $field_option_group_type,
-        '#options' => $optionList,
-        '#empty_value' => '',
-        '#default_value' => $default,
-      ];
+      '#type' => $field_option_group_type,
+      '#options' => $optionList,
+      '#empty_value' => '',
+      '#default_value' => $default,
+    ];
 
     // Return element(s).
     return $element;
