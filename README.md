@@ -3,12 +3,12 @@ INTRODUCTION
 
 ##### CiviCRM Field Options
 
-This module Provides CiviCRM Option Group options in Drupal Node. In case you
- want to user CiviCRM Fields option to be used in Drupal node, so instead of 
- creating same option manual, use same field option through this module.
+This module Provides CiviCRM Option Group options in Drupal Node. In case you 
+want to use the CiviCRM Fields option to be used in Drupal node, so instead of 
+creating the same option manually, use the same field option through this module.
  
-This module does not sync the save data on drupal node to civicrm. it just 
-provide civicrm field option to drupal fields.
+This module does not sync the saved data on the drupal node to civicrm. It 
+just provides civicrm field options to drupal fields.
 
 INSTALLATION
 ------------
