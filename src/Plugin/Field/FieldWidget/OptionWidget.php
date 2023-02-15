@@ -26,7 +26,7 @@ class OptionWidget extends WidgetBase implements ContainerFactoryPluginInterface
   /**
    * The CiviCRM API service.
    *
-   * @var \Drupal\civicrm_fields\Utility\CivicrmService
+   * @var \Drupal\civicrm_field_options\Utility\CivicrmService
    */
   protected $civicrm;
 

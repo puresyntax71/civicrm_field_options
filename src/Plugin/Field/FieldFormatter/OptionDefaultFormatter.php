@@ -27,7 +27,7 @@ class OptionDefaultFormatter extends FormatterBase implements ContainerFactoryPl
   /**
    * The CiviCRM API service.
    *
-   * @var \Drupal\civicrm_fields\Utility\CivicrmService
+   * @var \Drupal\civicrm_field_options\Utility\CivicrmService
    */
   protected $civicrm;
 
@@ -94,7 +94,7 @@ class OptionDefaultFormatter extends FormatterBase implements ContainerFactoryPl
     if (empty($field_option_group)) {
       return '';
     }
-    $results = '';
+    $result = '';
     if ($item->get('value')->getValue() != NULL) {
       $optionValue = $item->get('value')->getValue();
       try {
@@ -106,15 +106,6 @@ class OptionDefaultFormatter extends FormatterBase implements ContainerFactoryPl
       }
       catch (\Exception $e) {
         $this->logger->error(print_r($e->getMessage(), TRUE));
-      }
-      if (!is_null($results) && !empty($results)) {
-        $elements[] = [
-          '#type' => 'markup',
-          '#markup' => $result,
-          '#cache' => [
-            'max-age' => 0,
-          ],
-        ];
       }
     }
 

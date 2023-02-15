@@ -20,7 +20,7 @@ class CivicrmService implements CivicrmServiceInterface {
   /**
    * The logger service.
    *
-   * @var \Drupal\Core\Logger\LoggerChannelInterface
+   * @var \Drupal\Core\Logger\LoggerChannelFactoryInterface
    */
   protected $logger;
 
